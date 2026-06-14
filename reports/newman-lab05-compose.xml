@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="FIT4110 Lab04 Notify Docker Verification" tests="11" time="0.128">
+  <testsuite name="01_Functional / GET health returns 200" id="e5539b3b-280c-4cd1-bbcd-c566f77a8899" timestamp="2026-06-14T10:33:39.642Z" tests="3" failures="0" errors="0" time="0.046">
+    <testcase name="Status code is 200" time="0.046" classname="01FunctionalGetHealthReturns200"/>
+    <testcase name="Response has status ok" time="0.046" classname="01FunctionalGetHealthReturns200"/>
+    <testcase name="Response has service name and version" time="0.046" classname="01FunctionalGetHealthReturns200"/>
+  </testsuite>
+  <testsuite name="01_Functional / POST valid notification returns 201" id="683d1711-9535-48a0-b542-b21738599bd8" timestamp="2026-06-14T10:33:39.642Z" tests="3" failures="0" errors="0" time="0.015">
+    <testcase name="Status code is 201" time="0.015" classname="01FunctionalPostValidNotificationReturns201"/>
+    <testcase name="Response has notification_id" time="0.015" classname="01FunctionalPostValidNotificationReturns201"/>
+    <testcase name="Response status is sent" time="0.015" classname="01FunctionalPostValidNotificationReturns201"/>
+  </testsuite>
+  <testsuite name="01_Functional / POST notification with all channels returns 201" id="1b6486a5-b6b0-49f5-b179-0e933bca0b3f" timestamp="2026-06-14T10:33:39.642Z" tests="2" failures="0" errors="0" time="0.009">
+    <testcase name="Status code is 201" time="0.009" classname="01FunctionalPostNotificationWithAllChannelsReturns201"/>
+    <testcase name="Response has notification_id and status" time="0.009" classname="01FunctionalPostNotificationWithAllChannelsReturns201"/>
+  </testsuite>
+  <testsuite name="02_Auth / POST notification without token returns 401" id="b53c403f-7cbb-4855-b254-0d8d8723317c" timestamp="2026-06-14T10:33:39.642Z" tests="2" failures="0" errors="0" time="0.008">
+    <testcase name="Missing token returns 401" time="0.008" classname="02AuthPostNotificationWithoutTokenReturns401"/>
+    <testcase name="Error is ProblemDetails" time="0.008" classname="02AuthPostNotificationWithoutTokenReturns401"/>
+  </testsuite>
+  <testsuite name="02_Auth / POST notification with wrong token returns 401" id="bb23094d-2509-4c00-accc-b1d84c13b161" timestamp="2026-06-14T10:33:39.642Z" tests="2" failures="0" errors="0" time="0.006">
+    <testcase name="Wrong token returns 401" time="0.006" classname="02AuthPostNotificationWithWrongTokenReturns401"/>
+    <testcase name="Error is ProblemDetails" time="0.006" classname="02AuthPostNotificationWithWrongTokenReturns401"/>
+  </testsuite>
+  <testsuite name="03_Negative / POST notification missing user_id returns 422" id="09b832dd-e043-48d1-8f2d-c9528abb9477" timestamp="2026-06-14T10:33:39.642Z" tests="2" failures="0" errors="0" time="0.008">
+    <testcase name="Missing user_id returns 422" time="0.008" classname="03NegativePostNotificationMissingUserIdReturns422"/>
+    <testcase name="Error is ProblemDetails" time="0.008" classname="03NegativePostNotificationMissingUserIdReturns422"/>
+  </testsuite>
+  <testsuite name="03_Negative / POST notification missing title returns 422" id="2c568156-1e8d-4033-9b6d-a5876feaac23" timestamp="2026-06-14T10:33:39.642Z" tests="2" failures="0" errors="0" time="0.007">
+    <testcase name="Missing title returns 422" time="0.007" classname="03NegativePostNotificationMissingTitleReturns422"/>
+    <testcase name="Error is ProblemDetails" time="0.007" classname="03NegativePostNotificationMissingTitleReturns422"/>
+  </testsuite>
+  <testsuite name="03_Negative / POST notification with invalid channel returns 422" id="a5d33b4c-d173-48b2-976c-e5433a7801fc" timestamp="2026-06-14T10:33:39.642Z" tests="2" failures="0" errors="0" time="0.006">
+    <testcase name="Invalid channel returns 422" time="0.006" classname="03NegativePostNotificationWithInvalidChannelReturns422"/>
+    <testcase name="Error is ProblemDetails" time="0.006" classname="03NegativePostNotificationWithInvalidChannelReturns422"/>
+  </testsuite>
+  <testsuite name="04_Boundary_Reliability / POST notification with all valid channels - email" id="4e576df2-dec9-4058-9fb3-9be717b08517" timestamp="2026-06-14T10:33:39.642Z" tests="2" failures="0" errors="0" time="0.008">
+    <testcase name="Email channel returns 201" time="0.008" classname="04BoundaryReliabilityPostNotificationWithAllValidChannelsEmail"/>
+    <testcase name="Response has notification_id and status" time="0.008" classname="04BoundaryReliabilityPostNotificationWithAllValidChannelsEmail"/>
+  </testsuite>
+  <testsuite name="04_Boundary_Reliability / POST notification with all valid channels - sms" id="93a334ae-d4d1-4c1f-ae56-592f96b6afcd" timestamp="2026-06-14T10:33:39.642Z" tests="2" failures="0" errors="0" time="0.009">
+    <testcase name="SMS channel returns 201" time="0.009" classname="04BoundaryReliabilityPostNotificationWithAllValidChannelsSms"/>
+    <testcase name="Response has notification_id and status" time="0.009" classname="04BoundaryReliabilityPostNotificationWithAllValidChannelsSms"/>
+  </testsuite>
+  <testsuite name="04_Boundary_Reliability / GET health responds under 1000ms" id="0f9eeda5-6e1b-4a70-a8b0-bef97f299e80" timestamp="2026-06-14T10:33:39.642Z" tests="2" failures="0" errors="0" time="0.006">
+    <testcase name="Health endpoint is reachable" time="0.006" classname="04BoundaryReliabilityGetHealthRespondsUnder1000Ms"/>
+    <testcase name="Response time is below 1000ms" time="0.006" classname="04BoundaryReliabilityGetHealthRespondsUnder1000Ms"/>
+  </testsuite>
+</testsuites>

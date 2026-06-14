@@ -1,16 +1,19 @@
-# Readiness Checklist – Lab 05
+# Readiness Checklist — A7 Notification Service (Lab 05)
 
-Đây là danh sách kiểm tra (checklist) để đảm bảo stack Docker Compose của bạn đã sẵn sàng trước khi gửi bài. Hãy tick vào mỗi mục sau khi hoàn thành.
+| # | Tiêu chí | Trạng thái |
+|---|----------|------------|
+| 1 | DB đã khởi động và sẵn sàng (`pg_isready`) | ✅ |
+| 2 | AI service có health check trả 200 | ✅ |
+| 3 | API kết nối được và `/health` trả 200 | ✅ |
+| 4 | Biến môi trường đặt đúng, không dùng secret thật | ✅ |
+| 5 | `team-internal` network hoạt động, service gọi nội bộ được | ✅ |
+| 6 | Version/tag image đúng quy ước (`notify:1.0.0`) | ✅ |
 
-- [ ] **Database ready:** container DB đã chạy và phản hồi `pg_isready`. Kiểm tra bằng `docker exec -it fit4110-db-lab05 pg_isready -U $POSTGRES_USER`.
-- [ ] **AI service ready:** container AI service trả về `200` cho endpoint `/health` và `/predict` hoạt động.
-- [ ] **API ready:** container API trả `200` cho `/health` và có thể tạo/lấy readings khi token hợp lệ.
-- [ ] **Environment variables:** `.env` đã được thiết lập đúng (APP_PORT, POSTGRES_USER, AUTH_TOKEN,…). Không sử dụng secret thật; lưu secret vào `.env` cục bộ, commit `.env.example`.
-- [ ] **Network & Ports:** mạng `team-internal` hoạt động; API gọi được AI bằng hostname `ai-service`; ports 8000 (API), 9000 (AI) và 5432 (DB) được map đúng.
-- [ ] **Image tags:** bạn đã build image với tag `v0.1.0-<team>` và push lên registry (ghcr.io hoặc Docker Hub). Xác nhận rằng tag xuất hiện trong registry.
+## Readiness chi tiết
 
-Ghi chú thêm những vấn đề gặp phải hoặc điều chỉnh tại đây:
-
-```
-- Mô tả…
-```
+- **Healthcheck**: `depends_on` + `condition: service_healthy` đảm bảo DB và AI sẵn sàng trước khi API start
+- **Env Validation**: Biến môi trường khai báo trong `.env.example`, không commit secret thật
+- **Graceful Shutdown**: `docker compose down` dừng container sạch
+- **Error Handling**: Request lỗi trả về ProblemDetails (401, 422)
+- **Auth**: Endpoint `/api/notifications` yêu cầu Bearer token
+- **Newman Test**: 11 requests, 24 assertions, 0 failed
