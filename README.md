@@ -1,9 +1,13 @@
+# Lab 05 - A7 Notification Service
+
+**Nhóm A7 - Product A**  
+**Service:** Notification Service  
+**Mô tả:** Dịch vụ gửi thông báo và cảnh báo đa kênh (In-app, Push, Email, SMS)
+
+
+
 # FIT4110_lab05_docker_compose_readiness
 
-**Học phần:** FIT4110 – Dịch vụ kết nối và Công nghệ nền tảng  
-**Buổi 5:** Điều phối đa dịch vụ với Docker Compose, readiness & AI service  
-**Case study:** Smart Campus Operations Platform  
-**Repo nền:** `FIT4110_lab04_docker_packaging`
 
 > Lab 04 đã chứng minh rằng một API chạy trên máy cá nhân có thể được đóng gói thành container và kiểm thử lại bằng Postman/Newman.  
 > Lab 05 mở rộng tư duy đó: thay vì một container đơn lẻ, chúng ta phải phối hợp **nhiều** dịch vụ thông qua Docker Compose. Đây là bước đệm trực tiếp để tham gia plug‑a‑thon – nơi mọi nhóm gắn kết dịch vụ của mình vào một hệ sinh thái chung.

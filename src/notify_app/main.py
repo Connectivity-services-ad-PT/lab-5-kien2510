@@ -1,9 +1,11 @@
 import os
+import httpx
 from datetime import datetime, timezone
 from enum import Enum
 from typing import Dict, List, Optional
 from uuid import uuid4
 
+from notify_app.mqtt_subscriber import start_mqtt_subscriber
 from fastapi import Depends, FastAPI, Header, HTTPException, Request, status
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
@@ -12,13 +14,18 @@ from pydantic import BaseModel, Field
 SERVICE_NAME = os.getenv("SERVICE_NAME", "notify")
 SERVICE_VERSION = os.getenv("SERVICE_VERSION", "1.0.0")
 AUTH_TOKEN = os.getenv("AUTH_TOKEN", "local-dev-token")
+TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN", "")
+TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID", "")
 
 app = FastAPI(
+    
     title="A7 - Notification Service",
     version=SERVICE_VERSION,
     description="Notification Service for Smart Campus",
 )
-
+@app.on_event("startup")
+async def startup_event():
+    start_mqtt_subscriber()
 
 class NotificationChannel(str, Enum):
     inapp = "inapp"
@@ -141,6 +148,12 @@ def verify_bearer_token(authorization: Optional[str] = Header(default=None)) -> 
             ),
         )
 
+def send_telegram(message: str):
+    if not TELEGRAM_TOKEN or not TELEGRAM_CHAT_ID:
+        return
+    url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage"
+    httpx.post(url, json={"chat_id": TELEGRAM_CHAT_ID, "text": message}, timeout=5)
+
 
 @app.get("/health", response_model=HealthResponse)
 def health() -> HealthResponse:
@@ -157,6 +170,7 @@ def health() -> HealthResponse:
         422: {"model": ProblemDetails},
     },
 )
+
 def send_notification(payload: NotificationCreate, request: Request) -> NotificationCreated:
     notification_id = f"N-{datetime.now(timezone.utc).strftime('%Y%m%d')}-{str(uuid4())[:8]}"
     item = {
@@ -168,4 +182,5 @@ def send_notification(payload: NotificationCreate, request: Request) -> Notifica
         "created_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
     }
     NOTIFICATIONS.append(item)
+    send_telegram(f"🔔 [{item['channel']}] {payload.title}\n{payload.message}")
     return NotificationCreated(notification_id=notification_id, status="sent")

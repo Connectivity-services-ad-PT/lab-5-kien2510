@@ -11,8 +11,8 @@ services:
     depends_on:
       db:
         condition: service_healthy
-      ai-service:
-        condition: service_healthy
+     # ai-service:
+     #   condition: service_healthy
     networks:
       - team-internal
       - class-net
@@ -42,21 +42,21 @@ services:
       timeout: 5s
       retries: 5
 
-  ai-service:
-    image: python:3.11-slim
-    container_name: fit4110-ai-lab05
-    working_dir: /service
-    volumes:
-      - ./src/ai_service:/service
-    command: ["sh", "-c", "pip install fastapi uvicorn --quiet && python main.py"]
-    networks:
-      - team-internal
-    healthcheck:
-      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:9000/health', timeout=3).read()\""]
-      interval: 30s
-      timeout: 5s
-      retries: 3
-      start_period: 30s
+  #ai-service:
+    #image: python:3.11-slim
+    #container_name: fit4110-ai-lab05
+    #working_dir: /service
+    #volumes:
+     # - ./src/ai_service:/service
+    #command: ["sh", "-c", "pip install fastapi uvicorn --quiet && python main.py"]
+    #networks:
+     # - team-internal
+    #healthcheck:
+      #test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:9000/health', timeout=3).read()\""]
+      #interval: 30s
+      ##timeout: 5s
+     # retries: 3
+     # start_period: 30s
 
 networks:
   team-internal:
